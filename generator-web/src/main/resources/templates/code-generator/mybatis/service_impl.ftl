@@ -7,62 +7,65 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description ${classInfo.classComment}
- * @author ${authorName}
- * @date ${.now?string('yyyy-MM-dd')}
- */
+* ${classInfo.classComment}
+* @author ${authorName}
+* @date ${.now?string('yyyy/MM/dd')}
+*/
 @Service
 public class ${classInfo.className}ServiceImpl implements ${classInfo.className}Service {
 
-	@Resource
-	private ${classInfo.className}Mapper ${classInfo.className?uncap_first}Mapper;
+    @Autowired
+    private ${classInfo.className}Mapper ${classInfo.className?uncap_first}Mapper;
 
 
-	@Override
-	public ReturnT<String> insert(${classInfo.className} ${classInfo.className?uncap_first}) {
+    @Override
+    public List<${classInfo.className}> get${classInfo.className}List(Map map){
+        return ${classInfo.className?uncap_first}Mapper.get${classInfo.className}List(map);
+    }
 
-		// valid
-		if (${classInfo.className?uncap_first} == null) {
-			return ${returnUtil}.ERROR("必要参数缺失");
-        }
+    @Override
+    public int update${classInfo.className}List(List<${classInfo.className}> list){
+        return ${classInfo.className?uncap_first}Mapper.update${classInfo.className}List(list);
+    }
 
-		${classInfo.className?uncap_first}Mapper.insert(${classInfo.className?uncap_first});
-        return ${returnUtil}.SUCCESS;
-	}
+    @Override
+    public int insert${classInfo.className}List(List<${classInfo.className}> list){
+        return ${classInfo.className?uncap_first}Mapper.insert${classInfo.className}List(list);
+    }
 
-
-	@Override
-	public ReturnT<String> delete(int id) {
-		int ret = ${classInfo.className?uncap_first}Mapper.delete(id);
-		return ret>0?${returnUtil}.SUCCESS():${returnUtil}.ERROR();
-	}
-
-
-	@Override
-	public ReturnT<String> update(${classInfo.className} ${classInfo.className?uncap_first}) {
-		int ret = ${classInfo.className?uncap_first}Mapper.update(${classInfo.className?uncap_first});
-		return ret>0?${returnUtil}.SUCCESS():${returnUtil}.ERROR();
-	}
-
-
-	@Override
-	public ${classInfo.className} load(int id) {
-		return ${classInfo.className?uncap_first}Mapper.load(id);
-	}
+    @Override
+    public int insertSingle${classInfo.className}(${classInfo.className} ${classInfo.className?uncap_first}){
+        <#--// valid-->
+        <#--if (${classInfo.className?uncap_first} == null) {-->
+            <#--return new ReturnT<String>(ReturnT.FAIL_CODE, "必要参数缺失");-->
+        <#--}-->
+        return ${classInfo.className?uncap_first}Mapper.insertSingle${classInfo.className}(${classInfo.className?uncap_first});
+        <#--return ReturnT.SUCCESS;-->
+    }
 
 
-	@Override
-	public Map<String,Object> pageList(int offset, int pagesize) {
+    @Override
+    public int delete${classInfo.className}ById(int id){
+        return ${classInfo.className?uncap_first}Mapper.delete${classInfo.className}ById(id);
+    }
 
-		List<${classInfo.className}> pageList = ${classInfo.className?uncap_first}Mapper.pageList(offset, pagesize);
-		int totalCount = ${classInfo.className?uncap_first}Mapper.pageListCount(offset, pagesize);
+    @Override
+    public int updateSingle${classInfo.className}(${classInfo.className} ${classInfo.className?uncap_first}){
+        return ${classInfo.className?uncap_first}Mapper.updateSingle${classInfo.className}(${classInfo.className?uncap_first});
 
-		// result
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("pageList", pageList);
-		result.put("totalCount", totalCount);
+    }
 
-		return result;
-	}
+    @Override
+    public Map<String,Object> page${classInfo.className}List(int offset,int pagesize){
+        List<${classInfo.className}> pageList = ${classInfo.className?uncap_first}Mapper.page${classInfo.className}List(offset, pagesize);
+        int totalCount = ${classInfo.className?uncap_first}Mapper.page${classInfo.className}ListCount(offset, pagesize);
+
+        // result
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("pageList", pageList);
+        result.put("totalCount", totalCount);
+
+        return result;
+    }
 
 }

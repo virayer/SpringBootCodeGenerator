@@ -14,6 +14,32 @@
     <@netCommon.viewerCounter />
 
     $(function () {
+
+        //获取url中的参数
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null) return unescape(r[2]);
+            return null; //返回参数值
+        }
+
+        $("#packageName").val(getUrlParam("packageName"));
+        $("#authorName").val(getUrlParam("authorName"));
+
+        if ($("#authorName").val() == '') {
+            $("#packageName").val(localStorage.packageName);
+        }
+        if ($("#authorName").val() == '') {
+            $("#authorName").val(localStorage.authorName);
+        }
+
+        if ($("#authorName").val() == '') {
+            $("#authorName").val($("#authorName").attr("placeholder"));
+        }
+        if ($("#packageName").val() == '') {
+            $("#packageName").val($("#packageName").attr("placeholder"));
+        }
+
         /**
          * 初始化 table sql 3
          */
@@ -87,6 +113,12 @@
                 contentType: "application/json",
                 success: function (data) {
                     if (data.code === 200) {
+                        if (localStorage.authorName == null || localStorage.authorName != $("#authorName").val()) {
+                            localStorage.authorName = $("#authorName").val();
+                        }
+                        if (localStorage.packageName == null || localStorage.packageName != $("#packageName").val()) {
+                            localStorage.packageName = $("#packageName").val();
+                        }
                         codeData = data.data;
                         genCodeArea.setValue(codeData.beetlentity);
                         genCodeArea.setSize('auto', 'auto');
@@ -202,34 +234,34 @@
 <body style="background-color: #e9ecef">
 
     <div class="container">
-        <nav class="navbar navbar-dark bg-primary btn-lg">
-            <a class="navbar-brand" href="http://www.bejson.com">BeJSON在线工具站</a>
-            <ul class="nav navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="http://zhengkai.blog.csdn.net">zhengkai.blog.csdn.net</a>
-                </li>
-            </ul>
-        </nav>
+<#--        <nav class="navbar navbar-dark bg-primary btn-lg">-->
+<#--            <a class="navbar-brand" href="http://www.bejson.com">BeJSON在线工具站</a>-->
+<#--            <ul class="nav navbar-nav">-->
+<#--                <li class="nav-item active">-->
+<#--                    <a class="nav-link" href="http://zhengkai.blog.csdn.net">zhengkai.blog.csdn.net</a>-->
+<#--                </li>-->
+<#--            </ul>-->
+<#--        </nav>-->
     </div>
 
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
     <div class="container">
         <h2>Spring Boot Code Generator!</h2>
-        <p class="lead">
-            √基于SpringBoot2+Freemarker的<a class="lead" href="https://github.com/moshowgame/SpringBootCodeGenerator">代码生成器</a><br>
-            √以解放双手为目的，减少大量重复的CRUD工作<br>
-            √支持mysql/oracle/pgsql三大数据库<br>
-            √用DDL-SQL语句生成JPA/JdbcTemplate/Mybatis/MybatisPlus/BeetlSQL相关代码。<br>
-            如果发现有SQL语句不能识别，请<a href="https://github.com/moshowgame/SpringBootCodeGenerator/issues">留言</a>，同时欢迎大家提<a href="https://github.com/moshowgame/SpringBootCodeGenerator/pulls">PR</a>和<a href="#" id="donate1">赞赏</a>，谢谢！<a id="version" href="#">查看版本</a>
-        </p>
+<#--        <p class="lead">-->
+<#--            √基于SpringBoot2+Freemarker的<a class="lead" href="https://github.com/moshowgame/SpringBootCodeGenerator">代码生成器</a><br>-->
+<#--            √以解放双手为目的，减少大量重复的CRUD工作<br>-->
+<#--            √支持mysql/oracle/pgsql三大数据库<br>-->
+<#--            √用DDL-SQL语句生成JPA/JdbcTemplate/Mybatis/MybatisPlus/BeetlSQL相关代码。<br>-->
+<#--            如果发现有SQL语句不能识别，请<a href="https://github.com/moshowgame/SpringBootCodeGenerator/issues">留言</a>，同时欢迎大家提<a href="https://github.com/moshowgame/SpringBootCodeGenerator/pulls">PR</a>和<a href="#" id="donate1">赞赏</a>，谢谢！<a id="version" href="#">查看版本</a>-->
+<#--        </p>-->
         <div id="donate" class="container" show="no"></div>
         <hr>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text">作者名称</span>
             </div>
-            <input type="text" class="form-control" id="authorName" name="authorName" value="zhengkai.blog.csdn.net">
+            <input type="text" class="form-control" id="authorName" name="authorName" placeholder="Virayer">
             <div class="input-group-prepend">
                 <span class="input-group-text">返回封装</span>
             </div>
@@ -237,7 +269,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">包名路径</span>
             </div>
-            <input type="text" class="form-control" id="packageName" name="packageName" value="com.softdev.system">
+            <input type="text" class="form-control" id="packageName" name="packageName" placeholder="com.yzzn">
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -280,11 +312,11 @@
             </select>
         </div>
         <textarea id="ddlSqlArea" placeholder="请输入表结构信息..." class="form-control btn-lg" style="height: 250px;">
-CREATE TABLE 'userinfo' (
-  'user_id' int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  'user_name' varchar(255) NOT NULL COMMENT '用户名',
-  'addtime' datetime NOT NULL COMMENT '创建时间',
-  PRIMARY KEY ('user_id')
+CREATE TABLE `userinfo` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `user_name` varchar(255) NOT NULL COMMENT '用户名',
+  `addtime` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息'
         </textarea><br>
         <p><button class="btn btn-primary btn-lg disabled" id="btnGenCode" role="button" data-toggle="popover" data-content="">开始生成 »</button> <button class="btn alert-secondary" id="btnCopy">一键复制</button></p>

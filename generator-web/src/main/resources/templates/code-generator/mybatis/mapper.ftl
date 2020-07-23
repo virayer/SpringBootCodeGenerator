@@ -4,54 +4,70 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * @description ${classInfo.classComment}
- * @author ${authorName}
- * @date ${.now?string('yyyy-MM-dd')}
- */
+* ${classInfo.classComment}
+* @author ${authorName}
+* @date ${.now?string('yyyy/MM/dd')}
+*/
 @Mapper
 @Repository
 public interface ${classInfo.className}Mapper {
 
     /**
-    * 新增
+    * [查询] 根据Map查询
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    int insert(${classInfo.className} ${classInfo.className?uncap_first});
+    List<${classInfo.className}> get${classInfo.className}List(Map map);
 
     /**
-    * 刪除
+    * [更新]
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    int delete(int id);
+    int update${classInfo.className}List(List<${classInfo.className}> list);
 
     /**
-    * 更新
+    * [新增]
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    int update(${classInfo.className} ${classInfo.className?uncap_first});
+    int insert${classInfo.className}List(List<${classInfo.className}> list);
 
     /**
-    * 查询 根据主键 id 查询
+    * [新增]
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    ${classInfo.className} load(int id);
+    int insertSingle${classInfo.className}(${classInfo.className} ${classInfo.className?uncap_first});
 
     /**
-    * 查询 分页查询
+    * [刪除]
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    List<${classInfo.className}> pageList(int offset,int pagesize);
+    int delete${classInfo.className}ById(int id);
 
     /**
-    * 查询 分页查询 count
+    * [更新]
     * @author ${authorName}
     * @date ${.now?string('yyyy/MM/dd')}
     **/
-    int pageListCount(int offset,int pagesize);
+    int updateSingle${classInfo.className}(${classInfo.className} ${classInfo.className?uncap_first});
+
+
+
+    /**
+    * [查询] 分页查询
+    * @author ${authorName}
+    * @date ${.now?string('yyyy/MM/dd')}
+    **/
+    List<${classInfo.className}> page${classInfo.className}List(int offset,int pagesize);
+
+    /**
+    * [查询] 分页查询 count
+    * @author ${authorName}
+    * @date ${.now?string('yyyy/MM/dd')}
+    **/
+    int page${classInfo.className}ListCount(int offset,int pagesize);
 
 }
